@@ -17,6 +17,10 @@ var imagemin = require('gulp-imagemin');
 var htmlmin = require('gulp-htmlmin');
 var pngquant = require('imagemin-pngquant');
 
+// Jenkyll plugins
+var cp = require('child_process');
+
+
 // Live reload plugins
 var embedlr = require('gulp-embedlr'),
     refresh = require('gulp-livereload'),
@@ -179,6 +183,27 @@ gulp.task('browserify-dist', function() {
   .pipe(gulp.dest('dist/scripts'));
 });
 
+// Posts task for development
+gulp.task('posts-dev', function() {
+
+  // Get any other view files from app/posts
+  gulp.src('./app/posts/**/*')
+  // Place them inside the dev/views folder
+  .pipe(gulp.dest('dev/posts/'))
+  // And tell the lrserver to refresh
+  .pipe(refresh(lrserver));
+});
+
+// Posts task for development
+gulp.task('posts-dist', function() {
+
+  // Get any other view files from app/posts
+  gulp.src('./app/posts/**/*')
+  // Place them inside the dev/views folder
+  .pipe(gulp.dest('dist/posts/'))
+
+});
+
 // Views task for development
 gulp.task('views-dev', function() {
   // Get our index.html
@@ -201,8 +226,8 @@ gulp.task('views-dist', function() {
   // And place it inside the dist folder
   .pipe(gulp.dest('dist/'));
 
-  // Get any other view files from app/views
-  gulp.src('./app/views/**/*')
+  // Get any other view files from app/views and app/posts
+  gulp.src('./app/views/**/*','./app/posts/**/*')
   // And place them inside the dev/views folder
   .pipe(gulp.dest('dist/views/'));
 });
@@ -229,6 +254,11 @@ gulp.task('images-dev', function() {
   .pipe(refresh(lrserver));
 });
 
+gulp.task('jekyll-build', function (done) {
+    return cp.spawn('jekyll', ['build'], {stdio: 'inherit'})
+        .on('close', done);
+});
+
 // Watch task for live reload
 gulp.task('watch', ['lint'], function() {
   // Start webserver
@@ -243,8 +273,13 @@ gulp.task('watch', ['lint'], function() {
   ]);
 
   //Watch all the html files
-  gulp.watch(['app/index.html', 'app/views/**/*.html'], [
+  gulp.watch(['app/index.html', 'app/views/**/*.html', 'app/posts/**/*.html'], [
   'views-dev'
+  ]);
+
+  //Watch all the html files
+  gulp.watch(['app/posts/**/*.html'], [
+  'posts-dev'
   ]);
 
   //Watch all the css files
@@ -256,19 +291,26 @@ gulp.task('watch', ['lint'], function() {
   gulp.watch(['app/images/*.{jpg,gif,png}', 'app/images/**/*.{jpg,gif,png}'],[
     'images-dev'
   ]);
+
+  gulp.watch(['jekyll/posts/**/*.md','jekyll/index.html'],[
+    'jekyll-build'
+  ]);
+
 });
 
 //Build the developmenet folder
 gulp.task('dev', function(callback) {
   runSequence('clean-dev',
-              ['views-dev', 'styles-dev', 'images-dev', 'copy-bower-components-dev', 'lint', 'browserify-dev'],
+              'jekyll-build',
+              ['views-dev', 'styles-dev', 'images-dev', 'posts-dev', 'copy-bower-components-dev', 'lint', 'browserify-dev'],
               callback);
 });
 
 //Build the distribution folder
 gulp.task('build', function(callback) {
   runSequence('clean-dist',
-              ['lint', 'minify-css', 'browserify-dist', 'minify-images', 'minify-views', 'copy-bower-components-dist', 'connectDist'],
+              'jekyll-build',
+              ['lint', 'minify-css', 'browserify-dist', 'minify-images', 'minify-views', 'posts-dist' , 'copy-bower-components-dist', 'connectDist'],
               callback);
 });
 

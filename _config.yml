@@ -1,0 +1,13 @@
+name: ""
+description: ""
+
+url: ""
+
+paginate: 10
+
+destination: ./app
+source: ./jekyll
+markdown: rdiscount
+permalink: pretty
+highlighter: pygments
+keep_files: [images, styles, scripts, bower_components, views]

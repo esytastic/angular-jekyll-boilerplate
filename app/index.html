@@ -1,34 +1,56 @@
-<!DOCTYPE html>
-<html ng-app="SampleApp">
-  <head lang="en">
+<!doctype html>
+<html>
+  <head>
     <meta charset="utf-8">
+    <title></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Angular-Gulp-Browserify-Starter</title>
-    <!-- styles -->
+
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
     <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css"/>
     <link rel="stylesheet" href="bower_components/animate.css/animate.css"/>
-    <link rel="stylesheet" href="styles/main.css"/>
-  </head>
-  <body>
+    <link rel="stylesheet" href="styles/main.css">
 
+    <!-- endbuild -->
+  </head>
+  <body ng-app="SampleApp">
+
+    <!-- Add your site or application content here -->
     <div class="container">
-    
+
         <ul class="nav nav-pills pull-right">
           <li class="active"><a ng-href="#/">Home</a></li>
           <li><a ng-href="#/about">About</a></li>
+          <li><a ng-href="#/">Contact</a></li>
         </ul>
-        <h3 class="text-muted">angular-boilerplate</h3>
+        <h3 class="text-muted">templateBlog</h3>
 
       <hr />
-
       <div class="row">
-        <div class="col-xs-12 col-sm-8">
-          <div class = "{{ pageClass }}"ng-view=""></div>
-        </div>
 
+        <div class="col-xs-12 col-sm-8">
+          <div ng-init="posts=[
+  
+    {
+      'title' : 'Consectetur Elit', 
+      'url' : '/posts/2013/03/09/best-spring-recipies2/', 
+      'date' : '09 Mar 2013', 
+      'subtitle' : '', 
+    },
+  
+    {
+      'title' : 'Lorem Ipsum Dolor Sit Amet', 
+      'url' : '/posts/2013/03/08/best-spring-recipies/', 
+      'date' : '08 Mar 2013', 
+      'subtitle' : '', 
+    }
+  
+]">
+            <div class = "view {[{ pageClass }]}"ng-view=""></div>
+          </div>
+        </div>
+        
         <div class="col-xs-12 col-sm-4">
           <div class="jumbotron">
             <p class="lead">
@@ -36,16 +58,24 @@
             </p>
           </div>
         </div>
+        
       </div>
 
-      <div class="footer">
-        <p>Powered by Angular, Bower, Gulp and Browserify.</p>
-      </div>
     </div>
 
-    <!-- scripts -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-XXXXX-X');
+      ga('send', 'pageview');
+    </script>
+
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="./scripts/bundled.js"></script>
-  </body>
+        
+</body>
 </html>
