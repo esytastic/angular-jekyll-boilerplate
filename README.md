@@ -30,4 +30,4 @@ If you want to clean both dist and dev folders you can run: `gulp clean`
 
 ## Posts
 
-Any new post should be created inside the jekyll directory under post/_posts using Jekyll/Liquid convetions. For more info
+Any new post should be created inside the jekyll directory under post/_posts using Jekyll/Liquid convetions. For more info this [link](http://jekyllrb.com/docs/posts/) covers most of it.
